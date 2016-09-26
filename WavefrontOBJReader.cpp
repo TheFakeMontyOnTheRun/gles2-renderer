@@ -17,6 +17,7 @@
 
 #include <array>
 
+#include "Common.h"
 #include "NativeBitmap.h"
 #include "Texture.h"
 #include "Material.h"
@@ -25,73 +26,8 @@
 #include "MeshObject.h"
 #include "MaterialList.h"
 #include "Scene.h"
+#include "WavefrontMaterialReader.h"
 #include "WavefrontOBJReader.h"
-
-std::vector<std::string> consolidateLines(std::vector<char> vector);
-
-float floatFrom(std::string str) {
-	std::istringstream buffer(str);
-	float temp;
-	buffer >> temp;
-
-	return temp;
-}
-
-int intFrom(std::string str) {
-	std::istringstream buffer(str);
-	int temp;
-	buffer >> temp;
-
-	return temp;
-}
-
-std::string readToEndOfLine(std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
-	std::stringstream toReturn;
-
-	while ( position != end && *position != "\n") {
-		toReturn << " " << *position;
-	}
-
-	return toReturn.str();
-}
-
-std::string filterComments(std::string input) {
-	bool reading = true;
-	std::stringstream output;
-
-	for (auto &character : input) {
-
-		if (character == '/') {
-			reading = false;
-		} else if (character == '\n') {
-			reading = true;
-		}
-
-		if (reading) {
-			output << character;
-		}
-	}
-
-	return output.str();
-}
-
-glm::vec3 readRGB( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
-
-	glm::vec3 toReturn;
-
-	std::string r = *position;
-	++position;
-	std::string g = *position;
-	++position;
-	std::string b = *position;
-	++position;
-
-	toReturn.r = floatFrom( r );
-	toReturn.b = floatFrom( g );
-	toReturn.b = floatFrom( b );
-
-	return toReturn;
-}
 
 glm::vec3 readVec3( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
 
@@ -259,81 +195,6 @@ std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::itera
 
 	odb::TrigBatch batch( trigsInThisBatch );
 	toReturn->trigBatches.push_back( batch );
-
-	return toReturn;
-}
-
-std::shared_ptr<odb::Material> readMaterial( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
-	std::shared_ptr<odb::Material> toReturn = std::make_shared<odb::Material>();
-
-	std::map< std::string, std::function<void(void)>> materialTokenHandlers;
-
-	materialTokenHandlers[ "Ns" ] = [&]() {
-		++position;
-		std::string parameter = *position;
-		++position;
-		toReturn->specularExponent = floatFrom(parameter);
-	};
-
-	materialTokenHandlers[ "Ka" ] = [&]() {
-		++position;
-		toReturn->ambientColour = readRGB( position, end );
-		++position;
-	};
-
-	materialTokenHandlers[ "Kd" ] = [&]() {
-		++position;
-		toReturn->diffuseColour = readRGB( position, end );
-		++position;
-	};
-
-
-	materialTokenHandlers[ "map_Kd" ] = [&]() {
-		++position;
-		toReturn->diffuseMapFilename = *position;//readToEndOfLine( position, end );
-		++position;
-	};
-
-	materialTokenHandlers[ "map_bump" ] = [&]() {
-		++position;
-		toReturn->normalMapFilename = *position;//readToEndOfLine( position, end );
-		++position;
-	};
-
-	while ( position != end && *position != "newmtl" ) {
-
-		auto handler = materialTokenHandlers[ *position ];
-
-		if ( handler != nullptr ) {
-			handler();
-		} else {
-			++position;
-		}
-	}
-	return toReturn;
-}
-
-odb::MaterialList readMaterialsFrom( std::string materialData ) {
-	odb::MaterialList toReturn;
-
-	std::stringstream buffer;
-	buffer << filterComments(materialData);
-	std::vector<std::string> tokenList{std::istream_iterator<std::string>(buffer),
-	                                   std::istream_iterator<std::string>{}};
-	auto it = tokenList.begin();
-	auto end = tokenList.end();
-
-	while ( it != end ) {
-		if ( *it ==  "newmtl" ) {
-			++it;
-			std::string id = *it;
-			++it;
-			auto material = readMaterial( it, end );
-			toReturn.materials[ id ] = material;
-		} else {
-			++it;
-		}
-	}
 
 	return toReturn;
 }

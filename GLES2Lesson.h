@@ -110,6 +110,12 @@ namespace odb {
         void setSpeeds(const glm::vec2 &param);
 
         void drawTrigBatch( odb::TrigBatch &batch, glm::vec3 translation, float xzAngle, float yzAngle );
+
+	    void printGLString(const char *name, GLenum s);
+
+	    void checkGlError(const char *op);
+
+	    GLuint uploadTextureData(int *pixels, int width, int height);
     };
 }
 #endif //LESSON02_GLES2LESSON_H

@@ -9,8 +9,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
 #include <memory>
 #include <vector>
 #include <map>
@@ -18,11 +16,7 @@
 #include <EGL/egl.h>
 
 #include "glm/glm.hpp"
-#include "Game.h"
-#include "glue.h"
 #include "glm/gtc/matrix_transform.hpp"
-
-
 #include <iostream>
 
 
@@ -36,7 +30,7 @@
 #include "MeshObject.h"
 #include "MaterialList.h"
 #include "Scene.h"
-
+#include "Logger.h"
 #include "GLES2Lesson.h"
 
 namespace odb {
@@ -105,7 +99,7 @@ namespace odb {
 
     const glm::vec4 GLES2Lesson::ambientLightOffColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-    GLuint uploadTextureData(int *pixels, int width, int height) {
+    GLuint GLES2Lesson::uploadTextureData(int *pixels, int width, int height) {
 	    // Texture object handle
 	    GLuint textureId = 0;
 
@@ -123,14 +117,14 @@ namespace odb {
     }
 
 
-    extern void printGLString(const char *name, GLenum s) {
+    void GLES2Lesson::printGLString(const char *name, GLenum s) {
 	    const char *v = (const char *) glGetString(s);
-	    LOGI("GL %s = %s\n", name, v);
+	    Logger::log("GL %s = %s\n", name, v);
     }
 
-    extern void checkGlError(const char *op) {
+    void GLES2Lesson::checkGlError(const char *op) {
 	    for (GLint error = glGetError(); error; error = glGetError()) {
-		    LOGI("after %s() glError (0x%x)\n", op, error);
+		    Logger::log("after %s() glError (0x%x)\n", op, error);
 	    }
     }
 
@@ -148,7 +142,7 @@ namespace odb {
 				    char *buf = (char *) malloc(infoLen);
 				    if (buf) {
 					    glGetShaderInfoLog(shader, infoLen, NULL, buf);
-					    LOGE("Could not compile shader %d:\n%s\n", shaderType, buf);
+					    Logger::log("Could not compile shader %d:\n%s\n", shaderType, buf);
 					    free(buf);
 				    }
 				    glDeleteShader(shader);
@@ -186,7 +180,7 @@ namespace odb {
 				    char *buf = (char *) malloc(bufLength);
 				    if (buf) {
 					    glGetProgramInfoLog(program, bufLength, NULL, buf);
-					    LOGE("Could not link program:\n%s\n", buf);
+					    Logger::log("Could not link program:\n%s\n", buf);
 					    free(buf);
 				    }
 			    }
@@ -235,7 +229,7 @@ namespace odb {
 	    gProgram = createProgram(vertexShader.c_str(), fragmentShader.c_str());
 
 	    if (!gProgram) {
-		    LOGE("Could not create program.");
+		    Logger::log("Could not create program.");
 		    return false;
 	    }
 
@@ -432,7 +426,7 @@ namespace odb {
 
     void GLES2Lesson::shutdown() {
 	    delete textureData;
-	    LOGI("Shutdown!\n");
+	    Logger::log("Shutdown!\n");
     }
 
     void GLES2Lesson::toggleFiltering() {

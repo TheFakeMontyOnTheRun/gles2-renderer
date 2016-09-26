@@ -17,6 +17,18 @@
 #include "TrigBatch.h"
 
 namespace odb {
+
+	void TrigBatch::draw(GLuint vertexAttributePosition,
+	                     GLuint textureCoordinatesAttributePosition) {
+		glVertexAttribPointer(vertexAttributePosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+		                      vertex);
+
+		glVertexAttribPointer(textureCoordinatesAttributePosition, 2, GL_FLOAT, GL_FALSE,
+		                      2 * sizeof(float), uv);
+
+		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	}
+
 	void TrigBatch::draw(GLuint vertexAttributePosition,
 	                     GLuint textureCoordinatesAttributePosition, GLuint normalAttributePosition, GLuint tangentVectorShaderPosition) {
 

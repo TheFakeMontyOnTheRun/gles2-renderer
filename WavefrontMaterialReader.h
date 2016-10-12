@@ -5,6 +5,6 @@
 #ifndef DUNGEONSOFNOUDAR_NDK_WAVEFRONTOBJREADER_H
 #define DUNGEONSOFNOUDAR_NDK_WAVEFRONTOBJREADER_H
 
-odb::MaterialList readMaterialsFrom( std::string materialData );
+odb::MaterialList readMaterialsFrom( std::istream& materialData );
 
 #endif //DUNGEONSOFNOUDAR_NDK_WAVEFRONTOBJREADER_H

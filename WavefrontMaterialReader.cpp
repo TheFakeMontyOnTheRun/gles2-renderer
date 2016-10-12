@@ -97,12 +97,10 @@ std::shared_ptr<odb::Material> readMaterial( std::vector<std::string>::iterator 
 	return toReturn;
 }
 
-odb::MaterialList readMaterialsFrom( std::string materialData ) {
+odb::MaterialList readMaterialsFrom( std::istream& materialData ) {
 	odb::MaterialList toReturn;
 
-	std::stringstream buffer;
-	buffer << filterComments(materialData);
-	std::vector<std::string> tokenList{std::istream_iterator<std::string>(buffer),
+	std::vector<std::string> tokenList{std::istream_iterator<std::string>(materialData),
 	                                   std::istream_iterator<std::string>{}};
 	auto it = tokenList.begin();
 	auto end = tokenList.end();

@@ -199,12 +199,15 @@ std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::itera
 	return toReturn;
 }
 
-std::vector<std::string> consolidateLines(std::string data) {
+std::vector<std::string> consolidateLines(std::istream& data) {
 	std::vector<std::string> lines;
 
 	std::stringstream buffer;
+	std::stringstream dataSource;
 
-	for ( auto c : data ) {
+	dataSource << data.rdbuf();
+
+	for ( auto c : dataSource.str() ) {
 		if ( c == '\n' ) {
 			lines.push_back( buffer.str() );
 			buffer.str(std::string());
@@ -216,9 +219,10 @@ std::vector<std::string> consolidateLines(std::string data) {
 	return lines;
 }
 
-void populateSceneWith( std::string meshData, std::shared_ptr<odb::Scene> scene ) {
+void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scene ) {
 	odb::MaterialList toReturn;
 	std::vector<std::string> tokenList = consolidateLines( meshData );
+
 	auto it = tokenList.begin();
 	auto end = tokenList.end();
 
@@ -239,7 +243,7 @@ void populateSceneWith( std::string meshData, std::shared_ptr<odb::Scene> scene 
 
 
 
-std::shared_ptr<odb::Scene> readScene(std::string objFileContents, std::string materialFileContents) {
+std::shared_ptr<odb::Scene> readScene(std::istream& objFileContents, std::istream& materialFileContents) {
 
 	std::shared_ptr<odb::Scene> scene = std::make_shared<odb::Scene>();
 	scene->materialList = readMaterialsFrom(materialFileContents);

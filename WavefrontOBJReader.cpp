@@ -57,7 +57,7 @@ glm::vec3 readVec2( std::vector<std::string>::iterator &position,  std::vector<s
 	++position;
 
 	toReturn.x = floatFrom( x );
-	toReturn.y = floatFrom( y );
+	toReturn.y = 1.0f - floatFrom( y );
 
 	return toReturn;
 }

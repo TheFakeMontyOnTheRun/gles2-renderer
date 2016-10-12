@@ -230,7 +230,7 @@ void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scen
 
 		std::string stringLine = *it;
 
-		if ( stringLine[ 0 ] ==  'o' ) {
+		if ( stringLine[ 0 ] ==  'o' || stringLine[ 0 ] ==  'g' ) {
 			std::string id = stringLine;
 			++it;
 			auto object = readObjectFrom( it, end, scene->materialList );

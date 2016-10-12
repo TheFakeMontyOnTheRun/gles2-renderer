@@ -9,8 +9,12 @@ namespace odb {
 	class MeshObject {
 	private:
 	public:
+
+		using Id = std::string;
+		static const Id NullId;
+
 		std::vector<TrigBatch> trigBatches;
-		std::string id;
+		Id mId;
 	};
 }
 

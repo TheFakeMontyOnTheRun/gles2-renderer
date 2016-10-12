@@ -11,4 +11,6 @@ int intFrom(std::string str);
 
 std::string filterComments(std::string input);
 
+std::string readToString(FILE *fileDescriptor);
+
 #endif //DUNGEONSOFNOUDAR_NDK_COMMON_H

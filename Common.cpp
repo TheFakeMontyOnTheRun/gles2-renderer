@@ -44,3 +44,22 @@ std::string filterComments(std::string input) {
 	return output.str();
 }
 
+std::string readToString(FILE *fileDescriptor) {
+	const unsigned N = 1024;
+	std::string total;
+	while (true) {
+		char buffer[N];
+		size_t read = fread((void *) &buffer[0], 1, N, fileDescriptor);
+		if (read) {
+			for (int c = 0; c < read; ++c) {
+				total.push_back(buffer[c]);
+			}
+		}
+		if (read < N) {
+			break;
+		}
+	}
+
+	return total;
+}
+

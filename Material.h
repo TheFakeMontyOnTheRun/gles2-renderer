@@ -8,6 +8,10 @@
 namespace odb {
 	class Material {
 	public:
+
+		using Id = std::string;
+        static const Id NullId;
+
 		std::shared_ptr<NativeBitmap> mBitmap;
 
 		float specularExponent = 0.0f;

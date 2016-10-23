@@ -62,4 +62,3 @@ std::string readToString(FILE *fileDescriptor) {
 
 	return total;
 }
-

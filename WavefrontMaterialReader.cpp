@@ -2,9 +2,22 @@
 // Created by monty on 24/09/16.
 //
 
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
+
+#ifdef __APPLE__
+#if TARGET_IOS
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
+#import <OpenGL/OpenGL.h>
+#import <OpenGL/gl3.h>
+#endif
+#else
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+#include <EGL/egl.h>
+#endif
+
 #include <memory>
 #include <vector>
 #include <string>

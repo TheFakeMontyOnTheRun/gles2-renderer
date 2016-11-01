@@ -1,7 +1,7 @@
 //
 // Created by monty on 21/02/16.
 //
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 #include "Trig.h"
 namespace odb {

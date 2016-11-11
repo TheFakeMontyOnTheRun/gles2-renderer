@@ -28,7 +28,7 @@ namespace odb {
     }
 
     NativeBitmap::~NativeBitmap() {
-        delete mRawData;
+        delete[] mRawData;
     }
 
     std::shared_ptr<NativeBitmap> NativeBitmap::makeBitmapWithHalfDimensions() {

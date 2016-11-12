@@ -62,7 +62,7 @@ namespace odb {
 	}
 
 	TrigBatch::TrigBatch(const std::vector<Trig> &triangles) {
-		int size = triangles.size();
+		size_t size = triangles.size();
 
 		vertex = new float[3 * 3 * size];
 		normal = new float[3 * 3 * size];

@@ -2,12 +2,12 @@
 // Created by monty on 23/11/15.
 //
 
-#ifndef LESSON02_GLES2LESSON_H
-#define LESSON02_GLES2LESSON_H
+#ifndef GLES2RENDERER_GLES2RENDERER_H
+#define GLES2RENDERER_GLES2RENDERER_H
 
 namespace odb {
 
-    class GLES2Lesson {
+    class GLES2Renderer {
 
         void fetchShaderLocations();
 
@@ -56,6 +56,7 @@ namespace odb {
 
         GLuint textureId;
 	    GLuint normalMapId;
+
         //VBO stuff
         GLuint vboCubeVertexDataIndex;
         GLuint vboCubeVertexIndicesIndex;
@@ -78,9 +79,9 @@ namespace odb {
         float rotationXZSpeed;
         float rotationYZSpeed;
     public:
-        GLES2Lesson();
+        GLES2Renderer();
 
-        ~GLES2Lesson();
+        ~GLES2Renderer();
 
         bool init(float w, float h, const std::string &vertexShader,
                   const std::string &fragmentShader);
@@ -118,4 +119,4 @@ namespace odb {
 	    GLuint uploadTextureData(int *pixels, int width, int height);
     };
 }
-#endif //LESSON02_GLES2LESSON_H
+#endif //GLES2RENDERER_GLES2RENDERER_H

@@ -44,11 +44,11 @@
 #include "MaterialList.h"
 #include "Scene.h"
 #include "Logger.h"
-#include "GLES2Lesson.h"
+#include "GLES2Renderer.h"
 
 namespace odb {
 //Counter Clockwise
-    const float GLES2Lesson::cubeVertices[]{
+    const float GLES2Renderer::cubeVertices[]{
 //    4________5
 //    /|       /|
 //   / |      / |
@@ -92,7 +92,7 @@ namespace odb {
     };
 
 
-    const unsigned short GLES2Lesson::cubeIndices[]{
+    const unsigned short GLES2Renderer::cubeIndices[]{
 		    20, 21, 23,
 		    22, 20, 23,
 		    16, 18, 19,
@@ -108,11 +108,11 @@ namespace odb {
     };
 
 
-    const glm::vec4 GLES2Lesson::ambientLightFullColor = glm::vec4(0.15f, 0.15f, 0.15f, 1.0f);
+    const glm::vec4 GLES2Renderer::ambientLightFullColor = glm::vec4(0.15f, 0.15f, 0.15f, 1.0f);
 
-    const glm::vec4 GLES2Lesson::ambientLightOffColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    const glm::vec4 GLES2Renderer::ambientLightOffColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-    GLuint GLES2Lesson::uploadTextureData(int *pixels, int width, int height) {
+    GLuint GLES2Renderer::uploadTextureData(int *pixels, int width, int height) {
 	    // Texture object handle
 	    GLuint textureId = 0;
 
@@ -130,18 +130,18 @@ namespace odb {
     }
 
 
-    void GLES2Lesson::printGLString(const char *name, GLenum s) {
+    void GLES2Renderer::printGLString(const char *name, GLenum s) {
 	    const char *v = (const char *) glGetString(s);
 	    Logger::log("GL %s = %s\n", name, v);
     }
 
-    void GLES2Lesson::checkGlError(const char *op) {
+    void GLES2Renderer::checkGlError(const char *op) {
 	    for (GLint error = glGetError(); error; error = glGetError()) {
 		    Logger::log("after %s() glError (0x%x)\n", op, error);
 	    }
     }
 
-    GLuint GLES2Lesson::loadShader(GLenum shaderType, const char *pSource) {
+    GLuint GLES2Renderer::loadShader(GLenum shaderType, const char *pSource) {
 	    auto shader = glCreateShader(shaderType);
 	    if (shader) {
 		    glShaderSource(shader, 1, &pSource, NULL);
@@ -166,7 +166,7 @@ namespace odb {
 	    return shader;
     }
 
-    GLuint GLES2Lesson::createProgram(const char *pVertexSource, const char *pFragmentSource) {
+    GLuint GLES2Renderer::createProgram(const char *pVertexSource, const char *pFragmentSource) {
 	    auto vertexShader = loadShader(GL_VERTEX_SHADER, pVertexSource);
 	    if (!vertexShader) {
 		    return 0;
@@ -204,14 +204,14 @@ namespace odb {
 	    return program;
     }
 
-    void GLES2Lesson::printVerboseDriverInformation() {
+    void GLES2Renderer::printVerboseDriverInformation() {
 	    printGLString("Version", GL_VERSION);
 	    printGLString("Vendor", GL_VENDOR);
 	    printGLString("Renderer", GL_RENDERER);
 	    printGLString("Extensions", GL_EXTENSIONS);
     }
 
-    GLES2Lesson::GLES2Lesson() {
+    GLES2Renderer::GLES2Renderer() {
 //start off as identity - late we will init it with proper values.
 	    cubeTransformMatrix = glm::mat4(1.0f);
 	    projectionMatrix = glm::mat4(1.0f);
@@ -228,13 +228,13 @@ namespace odb {
 	    reset();
     }
 
-    GLES2Lesson::~GLES2Lesson() {
+    GLES2Renderer::~GLES2Renderer() {
 	    deleteVBOs();
 	    glDeleteTextures(1, &textureId);
 	    glDeleteTextures(1, &normalMapId);
     }
 
-    bool GLES2Lesson::init(float w, float h, const std::string &vertexShader,
+    bool GLES2Renderer::init(float w, float h, const std::string &vertexShader,
                            const std::string &fragmentShader) {
 
 	    printVerboseDriverInformation();
@@ -267,7 +267,7 @@ namespace odb {
 	    return true;
     }
 
-    glm::mat4 GLES2Lesson::resetTransformMatrices(glm::vec3 translate) {
+    glm::mat4 GLES2Renderer::resetTransformMatrices(glm::vec3 translate) {
 	    glm::mat4 identity = glm::mat4(1.0f);
 	    glm::vec3 xAxis = glm::vec3(1.0f, 0.0f, 0.0f);
 	    glm::vec3 yAxis = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -277,7 +277,7 @@ namespace odb {
 	    return rotatedAroundYAxis;
     }
 
-    void GLES2Lesson::fetchShaderLocations() {
+    void GLES2Renderer::fetchShaderLocations() {
 
 	    vertexAttributePosition = glGetAttribLocation(gProgram, "aPosition");
 	    modelMatrixAttributePosition = glGetUniformLocation(gProgram, "uModel");
@@ -297,7 +297,7 @@ namespace odb {
 	    tangentVectorShaderPosition = glGetAttribLocation(gProgram, "aTangent");
     }
 
-    void GLES2Lesson::drawGeometry(const int vertexVbo, const int indexVbo, int vertexCount,
+    void GLES2Renderer::drawGeometry(const int vertexVbo, const int indexVbo, int vertexCount,
                                    const glm::mat4 &transform) {
 
 	    glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
@@ -333,12 +333,12 @@ namespace odb {
 	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    void GLES2Lesson::deleteVBOs() {
+    void GLES2Renderer::deleteVBOs() {
 	    glDeleteBuffers(1, &vboCubeVertexDataIndex);
 	    glDeleteBuffers(1, &vboCubeVertexIndicesIndex);
     }
 
-    void GLES2Lesson::createVBOs() {
+    void GLES2Renderer::createVBOs() {
 	    glGenBuffers(1, &vboCubeVertexDataIndex);
 	    glBindBuffer(GL_ARRAY_BUFFER, vboCubeVertexDataIndex);
 	    glBufferData(GL_ARRAY_BUFFER, 4 * 6 * sizeof(float) * 12, cubeVertices, GL_STATIC_DRAW);
@@ -350,7 +350,7 @@ namespace odb {
 	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    void GLES2Lesson::clearBuffers() {
+    void GLES2Renderer::clearBuffers() {
 	    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	    glClearDepthf(1.0f);
 	    checkGlError("glClearColor");
@@ -358,11 +358,11 @@ namespace odb {
 	    checkGlError("glClear");
     }
 
-    void GLES2Lesson::setPerspective() {
+    void GLES2Renderer::setPerspective() {
 	    glUniformMatrix4fv(projectionMatrixAttributePosition, 1, false, &projectionMatrix[0][0]);
     }
 
-    void GLES2Lesson::prepareShaderProgram() {
+    void GLES2Renderer::prepareShaderProgram() {
 	    glUseProgram(gProgram);
 	    checkGlError("glUseProgram");
 
@@ -381,7 +381,7 @@ namespace odb {
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, currentFilter);
     }
 
-    void GLES2Lesson::render() {
+    void GLES2Renderer::render() {
 	    clearBuffers();
 	    prepareShaderProgram();
 	    setPerspective();
@@ -424,7 +424,7 @@ namespace odb {
 
     }
 
-    void GLES2Lesson::setTexture(int *bitmapData, int *normalData, int width, int height,
+    void GLES2Renderer::setTexture(int *bitmapData, int *normalData, int width, int height,
                                  int format) {
 	    textureData = bitmapData;
 	    normals = normalData;
@@ -432,17 +432,17 @@ namespace odb {
 	    textureHeight = height;
     }
 
-    void GLES2Lesson::tick() {
+    void GLES2Renderer::tick() {
 	    cubeRotationAngleYZ += rotationYZSpeed;
 	    cubeRotationAngleXZ += rotationXZSpeed;
     }
 
-    void GLES2Lesson::shutdown() {
+    void GLES2Renderer::shutdown() {
 	    delete textureData;
 	    Logger::log("Shutdown!\n");
     }
 
-    void GLES2Lesson::toggleFiltering() {
+    void GLES2Renderer::toggleFiltering() {
 //        if (currentFilter == GL_NEAREST) {
 //            currentFilter = GL_LINEAR;
 //            LOGI("Using GL_LINEAR\n");
@@ -452,7 +452,7 @@ namespace odb {
 //        }
     }
 
-    void GLES2Lesson::toggleLightning() {
+    void GLES2Renderer::toggleLightning() {
 //        if (ambientLightColor == ambientLightFullColor) {
 //            ambientLightColor = ambientLightOffColor;
 //        } else {
@@ -460,35 +460,35 @@ namespace odb {
 //        }
     }
 
-    void GLES2Lesson::speedUpXZ() {
+    void GLES2Renderer::speedUpXZ() {
 	    rotationXZSpeed += 0.125f;
     }
 
-    void GLES2Lesson::speedDownXZ() {
+    void GLES2Renderer::speedDownXZ() {
 	    rotationXZSpeed -= 0.125f;
     }
 
-    void GLES2Lesson::speedUpYZ() {
+    void GLES2Renderer::speedUpYZ() {
 	    rotationYZSpeed += 0.125f;
     }
 
-    void GLES2Lesson::speedDownYZ() {
+    void GLES2Renderer::speedDownYZ() {
 	    rotationYZSpeed -= 0.125f;
     }
 
-    void GLES2Lesson::reset() {
+    void GLES2Renderer::reset() {
 	    cubeRotationAngleYZ = 0.0f;
 	    rotationYZSpeed = 0.0f;
 	    cubeRotationAngleXZ = 0.0f;
 	    rotationXZSpeed = 0.0f;
     }
 
-    void GLES2Lesson::setSpeeds(const glm::vec2 &velocity) {
+    void GLES2Renderer::setSpeeds(const glm::vec2 &velocity) {
 	    rotationXZSpeed = -velocity.x;
 	    rotationYZSpeed = -velocity.y;
     }
 
-	void GLES2Lesson::drawTrigBatch( odb::TrigBatch &batch, glm::vec3 translation, float xzAngle, float yzAngle ) {
+	void GLES2Renderer::drawTrigBatch( odb::TrigBatch &batch, glm::vec3 translation, float xzAngle, float yzAngle ) {
 		prepareShaderProgram();
 		setPerspective();
 

@@ -20,7 +20,7 @@ namespace odb {
 #ifdef __ANDROID__
         __android_log_print(ANDROID_LOG_INFO, "Logger::log", "%s", buffer );
 #else
-        std::printf( "%s", buffer );
+        std::printf( "%s\n", buffer );
 #endif
         
         

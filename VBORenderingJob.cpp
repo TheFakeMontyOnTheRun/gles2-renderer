@@ -14,7 +14,12 @@ int odb::VBORenderingJob::getVBOId() {
     return mVBOId;
 }
 
-odb::VBORenderingJob::VBORenderingJob(int aVBOId, int aVBOIndicesId, int aAmount, glm::mat4 aTransform, float aShade) : mVBOId(aVBOId), mVBOIndicesId(aVBOIndicesId), mAmount(aAmount), mVBOInstanceTransform( aTransform), mShade(aShade) {
+odb::VBORenderingJob::VBORenderingJob(int aVBOId, int aVBOIndicesId, int aAmount, glm::mat4 aTransform, float aShade) :
+        mVBOInstanceTransform( aTransform),
+        mShade(aShade),
+        mVBOId(aVBOId),
+        mVBOIndicesId(aVBOIndicesId),
+        mAmount(aAmount) {
 }
 
 float odb::VBORenderingJob::getShade() {

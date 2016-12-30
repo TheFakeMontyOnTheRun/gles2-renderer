@@ -4,6 +4,7 @@
 #include <string>
 #include <iterator>
 #include <sstream>
+#include <vector>
 
 #include "Common.h"
 
@@ -42,6 +43,25 @@ std::string filterComments(std::string input) {
 	}
 
 	return output.str();
+}
+
+std::vector<char> readToBuffer(FILE *fileDescriptor) {
+	const unsigned N = 1024;
+	std::vector<char> total;
+	while (true) {
+		char buffer[N];
+		size_t read = fread((void *) &buffer[0], 1, N, fileDescriptor);
+		if (read) {
+			for (int c = 0; c < read; ++c) {
+				total.push_back(buffer[c]);
+			}
+		}
+		if (read < N) {
+			break;
+		}
+	}
+
+	return total;
 }
 
 std::string readToString(FILE *fileDescriptor) {

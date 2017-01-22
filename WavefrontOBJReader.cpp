@@ -23,7 +23,6 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <iostream>
 #include <sstream>
 #include <iterator>
 #include <unordered_set>
@@ -234,8 +233,11 @@ std::vector<std::string> consolidateLines(std::istream& data) {
 	return lines;
 }
 
+std::string extractIdFrom( std::string line ) {
+	return line.substr( 2 );
+}
+
 void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scene ) {
-	odb::MaterialList toReturn;
 	std::vector<std::string> tokenList = consolidateLines( meshData );
 
 	auto it = tokenList.begin();
@@ -244,9 +246,8 @@ void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scen
 	while ( it != end ) {
 
 		std::string stringLine = *it;
-
 		if ( stringLine[ 0 ] ==  'o' || stringLine[ 0 ] ==  'g' ) {
-			std::string id = stringLine;
+			std::string id = extractIdFrom( stringLine );
 			++it;
 			auto object = readObjectFrom( it, end, scene->materialList );
 			scene->meshObjects[ id ] = object;
@@ -263,6 +264,5 @@ std::shared_ptr<odb::Scene> readScene(std::istream& objFileContents, std::istrea
 	std::shared_ptr<odb::Scene> scene = std::make_shared<odb::Scene>();
 	scene->materialList = readMaterialsFrom(materialFileContents);
 	populateSceneWith( objFileContents, scene );
-
 	return scene;
 }

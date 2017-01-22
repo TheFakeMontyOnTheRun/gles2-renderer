@@ -64,6 +64,7 @@ namespace odb {
 	TrigBatch::TrigBatch(const std::vector<Trig> &triangles) {
 		size_t size = triangles.size();
 
+		cachedMeshData = new float[5 * 3 * size];
 		vertex = new float[3 * 3 * size];
 		normal = new float[3 * 3 * size];
 		normaltangent = new float[3 * 3 * size];
@@ -72,8 +73,27 @@ namespace odb {
 		int normalIndex = 0;
 		int normalTangentIndex = 0;
 		int uvIndex = 0;
+		int meshIndex = 0;
 		vertexCount = 0;
 		for (auto &trig : triangles) {
+			cachedMeshData[ meshIndex++ ] = trig.p0.x;
+			cachedMeshData[ meshIndex++ ] = trig.p0.y;
+			cachedMeshData[ meshIndex++ ] = trig.p0.z;
+			cachedMeshData[ meshIndex++ ] = trig.t0.x;
+			cachedMeshData[ meshIndex++ ] = trig.t0.y;
+
+			cachedMeshData[ meshIndex++ ] = trig.p1.x;
+			cachedMeshData[ meshIndex++ ] = trig.p1.y;
+			cachedMeshData[ meshIndex++ ] = trig.p1.z;
+			cachedMeshData[ meshIndex++ ] = trig.t1.x;
+			cachedMeshData[ meshIndex++ ] = trig.t1.y;
+
+			cachedMeshData[ meshIndex++ ] = trig.p2.x;
+			cachedMeshData[ meshIndex++ ] = trig.p2.y;
+			cachedMeshData[ meshIndex++ ] = trig.p2.z;
+			cachedMeshData[ meshIndex++ ] = trig.t2.x;
+			cachedMeshData[ meshIndex++ ] = trig.t2.y;
+
 			vertex[vertexIndex++] = trig.p0.x;
 			vertex[vertexIndex++] = trig.p0.y;
 			vertex[vertexIndex++] = trig.p0.z;
@@ -113,5 +133,34 @@ namespace odb {
 			uv[uvIndex++] = trig.t2.y;
 			++vertexCount;
 		}
+	}
+
+	float *TrigBatch::getVertexData() {
+		return this->cachedMeshData;
+	}
+
+	int TrigBatch::getVertexCount() {
+		return this->vertexCount;
+	}
+
+	float *TrigBatch::getUVData() {
+		return this->uv;
+	}
+
+	float *TrigBatch::getNormalData() {
+		return this->normal;
+	}
+
+	unsigned short *TrigBatch::getIndices() {
+		unsigned short *toReturn = new unsigned short[ vertexCount ];
+
+		for ( unsigned short c = 0; c < vertexCount; ++c ) {
+			toReturn[ c ] = c;
+		}
+		return toReturn;
+	}
+
+	int TrigBatch::getIndicesCount() {
+		return vertexCount;
 	}
 }

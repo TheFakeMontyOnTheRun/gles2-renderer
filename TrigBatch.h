@@ -11,6 +11,7 @@ namespace odb {
 		float *uv;
 		float *normal;
 		float *normaltangent;
+		float *cachedMeshData;
 		int vertexCount;
 		std::shared_ptr<Material> material;
 	public:
@@ -19,6 +20,18 @@ namespace odb {
 		void draw(unsigned int vertexAttributePosition, unsigned int textureCoordinatesAttributePosition, unsigned int normalAttributePosition, unsigned int tangentVectorShaderPosition);
 
 		void draw(unsigned int vertexAttributePosition, unsigned int textureCoordinatesAttributePosition);
+
+		float *getVertexData();
+
+		int getVertexCount();
+
+		float *getUVData();
+
+		float *getNormalData();
+
+		unsigned short *getIndices();
+
+		int getIndicesCount();
 	};
 }
 

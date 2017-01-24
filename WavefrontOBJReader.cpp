@@ -209,6 +209,7 @@ std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::itera
 
 	odb::TrigBatch batch( trigsInThisBatch );
 	toReturn->trigBatches.push_back( batch );
+	batch.material = currentMaterial;
 
 	return toReturn;
 }

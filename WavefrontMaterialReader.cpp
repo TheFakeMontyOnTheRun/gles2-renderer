@@ -40,7 +40,9 @@
 #include "Scene.h"
 #include "WavefrontMaterialReader.h"
 
-
+using Knights::floatFrom;
+using Knights::intFrom;
+using Knights::filterComments;
 
 glm::vec3 readRGB( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
 

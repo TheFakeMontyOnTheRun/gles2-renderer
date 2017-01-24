@@ -45,6 +45,10 @@
 #include "WavefrontMaterialReader.h"
 #include "WavefrontOBJReader.h"
 
+using Knights::floatFrom;
+using Knights::intFrom;
+using Knights::filterComments;
+
 glm::vec3 readVec3( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
 
 	glm::vec3 toReturn;

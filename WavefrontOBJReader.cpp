@@ -254,7 +254,6 @@ void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scen
 		std::string stringLine = *it;
 		if ( stringLine[ 0 ] == 'm' ) {
 			std::string materialFile = extractMaterialFileFrom( stringLine );
-			std::cout << "material file: " << materialFile << std::endl;
 			std::istringstream materialFileContents( fileLoader->loadFileFromPath( materialFile));
 			scene->materialList = readMaterialsFrom(materialFileContents);
 			++it;

@@ -3,6 +3,7 @@
 //
 #include <string>
 #include <iterator>
+#include <iostream>
 #include <sstream>
 #include <vector>
 
@@ -65,18 +66,22 @@ std::vector<char> readToBuffer(FILE *fileDescriptor) {
 }
 
 std::string readToString(FILE *fileDescriptor) {
-	const unsigned N = 1024;
+
 	std::string total;
-	while (true) {
-		char buffer[N];
-		size_t read = fread((void *) &buffer[0], 1, N, fileDescriptor);
+	fseek(fileDescriptor, 0, SEEK_END);
+	long fsize = ftell(fileDescriptor);
+	fseek(fileDescriptor, 0, SEEK_SET);
+
+	for ( auto pos = 0; pos < fsize; ++pos ) {
+		char buffer[1];
+		size_t read = fread((void *) &buffer[0], 1, 1, fileDescriptor);
 		if (read) {
 			for (int c = 0; c < read; ++c) {
 				total.push_back(buffer[c]);
 			}
 		}
-		if (read < N) {
-			break;
+		if (read < 1) {
+			return "total not met";
 		}
 	}
 

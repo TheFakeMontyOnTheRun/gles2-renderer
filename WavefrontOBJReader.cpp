@@ -19,6 +19,7 @@
 #include <GLES2/gl2ext.h>
 #endif
 
+#include <iostream>
 
 #include <memory>
 #include <vector>
@@ -40,6 +41,7 @@
 #include "MeshObject.h"
 #include "MaterialList.h"
 #include "Scene.h"
+#include "IFileLoaderDelegate.h"
 #include "WavefrontMaterialReader.h"
 #include "WavefrontOBJReader.h"
 
@@ -91,7 +93,6 @@ std::vector<int> parseProperties( std::string vertexRawInformation ) {
 	}
 
 	toReturn.push_back( intFrom( buffer.str() ) );
-
 	return toReturn;
 }
 
@@ -238,7 +239,11 @@ std::string extractIdFrom( std::string line ) {
 	return line.substr( 2 );
 }
 
-void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scene ) {
+std::string extractMaterialFileFrom( std::string line ) {
+	return line.substr( 7 );
+}
+
+void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scene, std::shared_ptr<Knights::IFileLoaderDelegate> fileLoader ) {
 	std::vector<std::string> tokenList = consolidateLines( meshData );
 
 	auto it = tokenList.begin();
@@ -247,7 +252,13 @@ void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scen
 	while ( it != end ) {
 
 		std::string stringLine = *it;
-		if ( stringLine[ 0 ] ==  'o' || stringLine[ 0 ] ==  'g' ) {
+		if ( stringLine[ 0 ] == 'm' ) {
+			std::string materialFile = extractMaterialFileFrom( stringLine );
+			std::cout << "material file: " << materialFile << std::endl;
+			std::istringstream materialFileContents( fileLoader->loadFileFromPath( materialFile));
+			scene->materialList = readMaterialsFrom(materialFileContents);
+			++it;
+		} else if ( stringLine[ 0 ] ==  'o' || stringLine[ 0 ] ==  'g' ) {
 			std::string id = extractIdFrom( stringLine );
 			++it;
 			auto object = readObjectFrom( it, end, scene->materialList );
@@ -264,6 +275,12 @@ std::shared_ptr<odb::Scene> readScene(std::istream& objFileContents, std::istrea
 
 	std::shared_ptr<odb::Scene> scene = std::make_shared<odb::Scene>();
 	scene->materialList = readMaterialsFrom(materialFileContents);
-	populateSceneWith( objFileContents, scene );
+	populateSceneWith( objFileContents, scene, nullptr );
+	return scene;
+}
+
+std::shared_ptr<odb::Scene> readScene(std::istream& objFileContents, std::shared_ptr<Knights::IFileLoaderDelegate> fileLoader) {
+	std::shared_ptr<odb::Scene> scene = std::make_shared<odb::Scene>();
+	populateSceneWith( objFileContents, scene, fileLoader );
 	return scene;
 }

@@ -3,18 +3,21 @@
 //
 #include "glm/glm.hpp"
 
-#ifdef __APPLE__
-#if TARGET_IOS
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#else
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl3.h>
-#endif
-#else
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#include <EGL/egl.h>
+
+#if defined(__ANDROID__ ) || defined(__EMSCRIPTEN__) || defined(MESA_GLES2) || defined(TARGET_IOS)
+	#ifdef __APPLE__
+	#if TARGET_IOS
+	#import <OpenGLES/ES2/gl.h>
+	#import <OpenGLES/ES2/glext.h>
+	#else
+	#import <OpenGL/OpenGL.h>
+	#import <OpenGL/gl3.h>
+	#endif
+	#else
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+	#include <EGL/egl.h>
+	#endif
 #endif
 
 
@@ -35,6 +38,7 @@ namespace odb {
 
 	void TrigBatch::draw(unsigned int vertexAttributePosition,
 	                     unsigned int textureCoordinatesAttributePosition) {
+#if defined(__ANDROID__ ) || defined(__EMSCRIPTEN__) || defined(MESA_GLES2) || defined(TARGET_IOS)
 		glVertexAttribPointer(vertexAttributePosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
 		                      vertex);
 
@@ -42,11 +46,12 @@ namespace odb {
 		                      2 * sizeof(float), uv);
 
 		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+#endif
 	}
 
-	void TrigBatch::draw(GLuint vertexAttributePosition,
-	                     GLuint textureCoordinatesAttributePosition, GLuint normalAttributePosition, GLuint tangentVectorShaderPosition) {
-
+	void TrigBatch::draw(unsigned int vertexAttributePosition,
+	                     unsigned int textureCoordinatesAttributePosition, unsigned int normalAttributePosition, unsigned int tangentVectorShaderPosition) {
+#if defined(__ANDROID__ ) || defined(__EMSCRIPTEN__) || defined(MESA_GLES2) || defined(TARGET_IOS)
 		glVertexAttribPointer(vertexAttributePosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
 		                      vertex);
 
@@ -59,6 +64,7 @@ namespace odb {
 							  sizeof(float) * 3, normaltangent);
 
 		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+#endif
 	}
 
 	TrigBatch::TrigBatch(const std::vector<Trig> &triangles) {

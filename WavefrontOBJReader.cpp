@@ -4,21 +4,6 @@
 
 #include "glm/glm.hpp"
 
-#ifdef __APPLE__
-#ifdef TARGET_OS_IPHONE
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#elif TARGET_OS_MAC
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl3.h>
-#else
-
-#endif
-#else
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#endif
-
 #include <iostream>
 
 #include <memory>

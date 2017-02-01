@@ -4,7 +4,6 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include <GLES2/gl2.h>
 
 #include <string>
 #include <memory>

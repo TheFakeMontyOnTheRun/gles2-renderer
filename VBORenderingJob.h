@@ -8,7 +8,7 @@
 namespace odb {
     class VBORenderingJob {
     public:
-        explicit VBORenderingJob( int vboId, int vboIndicesId, int amount, glm::mat4 transform, float shade );
+        explicit VBORenderingJob( int vboId, int vboIndicesId, int amount, glm::mat4 transform, float shade, bool needsAlphaTest);
         glm::mat4 getTransform();
         int getVBOId();
         int getVBOIndicesId();
@@ -20,6 +20,8 @@ namespace odb {
         int mVBOId = -1;
         int mVBOIndicesId = -1;
         int mAmount = 0;
+    public:
+	    bool mNeedsAlphaTest = false;
     };
 }
 

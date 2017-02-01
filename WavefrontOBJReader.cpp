@@ -52,9 +52,9 @@ glm::vec3 readVec3( std::vector<std::string>::iterator &position,  std::vector<s
 	return toReturn;
 }
 
-glm::vec3 readVec2( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
+glm::vec2 readVec2( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
 
-	glm::vec3 toReturn;
+	glm::vec2 toReturn;
 
 	std::string x = *position;
 	++position;

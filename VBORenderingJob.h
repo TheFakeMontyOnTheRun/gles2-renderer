@@ -9,11 +9,11 @@ namespace odb {
     class VBORenderingJob {
     public:
         explicit VBORenderingJob( int vboId, int vboIndicesId, int amount, glm::mat4 transform, float shade, bool needsAlphaTest);
-        glm::mat4 getTransform();
-        int getVBOId();
-        int getVBOIndicesId();
-        float getShade();
-        int getAmount();
+        glm::mat4 getTransform() const;
+        int getVBOId() const;
+        int getVBOIndicesId() const;
+        float getShade() const;
+        int getAmount() const;
     private:
         glm::mat4 mVBOInstanceTransform = glm::mat4( 1.0f );
         float mShade = 1.0f;

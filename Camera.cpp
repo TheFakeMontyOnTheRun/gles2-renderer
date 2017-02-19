@@ -9,7 +9,7 @@
 #include <array>
 #include <map>
 #include <vector>
-#include <glm/gtc/type_ptr.hpp>
+#include "glm/gtc/type_ptr.hpp"
 
 #include "Camera.h"
 

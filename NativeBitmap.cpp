@@ -5,15 +5,15 @@
 #include "NativeBitmap.h"
 
 namespace odb {
-    int NativeBitmap::getWidth() {
+    int NativeBitmap::getWidth() const {
         return this->mWidth;
     }
 
-    int NativeBitmap::getHeight() {
+    int NativeBitmap::getHeight() const {
         return this->mHeight;
     }
 
-    int *NativeBitmap::getPixelData() {
+    int *NativeBitmap::getPixelData() const {
         return this->mRawData;
     }
 
@@ -31,7 +31,7 @@ namespace odb {
         delete[] mRawData;
     }
 
-    std::shared_ptr<NativeBitmap> NativeBitmap::makeBitmapWithHalfDimensions() {
+    std::shared_ptr<NativeBitmap> NativeBitmap::makeBitmapWithHalfDimensions() const {
         int *rawData;
         int newWidth = mWidth / 2;
         int newHeight = mHeight / 2;

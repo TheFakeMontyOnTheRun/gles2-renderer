@@ -2,6 +2,7 @@
 //// Created by monty on 28/02/16.
 ////
 #include <memory>
+#include <string>
 #include "NativeBitmap.h"
 
 namespace odb {
@@ -17,8 +18,12 @@ namespace odb {
         return this->mRawData;
     }
 
-    NativeBitmap::NativeBitmap(int aWidth, int aHeight, int *aRawData) :
-            mWidth(aWidth), mHeight(aHeight), mRawData(aRawData) {
+    std::string NativeBitmap::getId() const {
+        return mId;
+    }
+
+    NativeBitmap::NativeBitmap(std::string aId, int aWidth, int aHeight, int *aRawData) :
+            mId(aId), mWidth(aWidth), mHeight(aHeight), mRawData(aRawData) {
     }
 
     void NativeBitmap::releaseTextureData() {
@@ -43,6 +48,6 @@ namespace odb {
             }
         }
 
-        return std::make_shared<NativeBitmap>(newWidth, newHeight, rawData);
+        return std::make_shared<NativeBitmap>( mId, newWidth, newHeight, rawData);
     }
 }

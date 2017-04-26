@@ -4,6 +4,9 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <cstring>
+
 #include "IFileLoaderDelegate.h"
 #include "NativeBitmap.h"
 #include "LoadPNG.h"
@@ -17,6 +20,9 @@ std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shar
     int ySize;
     int components;
     auto image = stbi_load_from_memory((const stbi_uc *) buffer.data(), buffer.size(), &xSize, &ySize, &components, 0 );
+    auto rawData = new int[ xSize * ySize ];
+    std::memcpy( rawData, image, xSize * ySize * 4 );
+    stbi_image_free(image);
 
-    return std::make_shared<odb::NativeBitmap>( filename, xSize, ySize, (int*)image );
+    return std::make_shared<odb::NativeBitmap>( filename, xSize, ySize, rawData );
 }

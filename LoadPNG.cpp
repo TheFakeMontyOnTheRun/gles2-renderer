@@ -19,6 +19,11 @@ std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shar
     int xSize;
     int ySize;
     int components;
+    
+#if defined(TARGET_IOS)
+    stbi_convert_iphone_png_to_rgb(1);
+#endif
+    
     auto image = stbi_load_from_memory((const stbi_uc *) buffer.data(), buffer.size(), &xSize, &ySize, &components, 0 );
     auto rawData = new int[ xSize * ySize ];
     std::memcpy( rawData, image, xSize * ySize * 4 );

@@ -11,7 +11,7 @@
 #include <sstream>
 #include <iterator>
 #include <unordered_set>
-
+#include <functional>
 #include <map>
 
 #include <array>

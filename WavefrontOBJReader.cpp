@@ -5,16 +5,14 @@
 #include "glm/glm.hpp"
 
 #include <iostream>
-
+#include <functional>
 #include <memory>
 #include <vector>
 #include <string>
 #include <sstream>
 #include <iterator>
 #include <unordered_set>
-
 #include <map>
-
 #include <array>
 
 #include "Common.h"

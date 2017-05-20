@@ -50,13 +50,13 @@ void odb::Camera::update( long ms ) {
 #ifndef OSMESA
 		mCameraRotation = std::min( mCameraRotation + 5, mRotationTarget );
 #else
-		mCameraRotation = std::min( mCameraRotation + 22, mRotationTarget );
+		mCameraRotation = std::min( mCameraRotation + 45, mRotationTarget );
 #endif
 	} else if (mRotationTarget < mCameraRotation) {
 #ifndef OSMESA
 		mCameraRotation = std::max( mCameraRotation - 5, mRotationTarget );
 #else
-		mCameraRotation = std::max( mCameraRotation - 22, mRotationTarget );
+		mCameraRotation = std::max( mCameraRotation - 45, mRotationTarget );
 #endif
 	}
 }

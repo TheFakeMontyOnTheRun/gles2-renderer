@@ -43,8 +43,8 @@ glm::vec3 odb::Camera::getPosition() {
 }
 
 void odb::Camera::update( long ms ) {
-	cameraPosition.x += ms * (mCameraTarget.x - cameraPosition.x) / 1000.0f;
-	cameraPosition.y += ms * (mCameraTarget.y - cameraPosition.y) / 1000.0f;
+	cameraPosition.x += (ms * (mCameraTarget.x - cameraPosition.x)) / 1000;
+	cameraPosition.y += (ms * (mCameraTarget.y - cameraPosition.y)) / 1000;
 
 	if (mRotationTarget > mCameraRotation) {
 #ifndef OSMESA

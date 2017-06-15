@@ -21,7 +21,6 @@
 #include <cmath>
 
 #include "NativeBitmap.h"
-#include "Texture.h"
 #include "Material.h"
 
 namespace odb {

@@ -8,7 +8,7 @@
 namespace odb {
 	class Logger {
 	public:
-		static void log(char* format, ...);
+		static void log(const char* format, ...);
         static void log(std::string format, ...);
 	};
 }

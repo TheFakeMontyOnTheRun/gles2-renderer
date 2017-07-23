@@ -26,7 +26,7 @@ namespace odb {
         
     }
     
-	void Logger::log(char* format, ...) {
+	void Logger::log(const char* format, ...) {
 		
         va_list args;
         va_start(args, format);

@@ -11,6 +11,10 @@
 #include "NativeBitmap.h"
 #include "LoadPNG.h"
 
+#ifdef OSMESA
+#define STB_IMAGE_IMPLEMENTATION
+#endif
+
 #include "stb_image.h"
 
 std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shared_ptr<Knights::IFileLoaderDelegate> fileLoader ) {

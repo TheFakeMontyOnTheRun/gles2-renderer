@@ -20,6 +20,7 @@ const bool kUseQuarterAngles =
         false;
 #endif
 
+static const auto transformIdentity = glm::mat4(1.0f);
 
 glm::mat4 odb::Camera::getTransform() {
     return mTransform;
@@ -30,8 +31,7 @@ void odb::Camera::rotateBy(glm::vec3 axis, int degrees) {
 }
 
 void odb::Camera::rotateTo(glm::vec3 axis, int degrees) {
-    auto identity = glm::mat4(1.0f);
-    mTransform = glm::rotate(identity, (float) degrees, axis);
+    mTransform = glm::rotate(transformIdentity, (float) degrees, axis);
 }
 
 void odb::Camera::moveBy(glm::vec3 delta) {
@@ -39,8 +39,7 @@ void odb::Camera::moveBy(glm::vec3 delta) {
 }
 
 void odb::Camera::moveTo(glm::vec3 position) {
-    auto identity = glm::mat4(1.0f);
-    mTransform = glm::translate(identity, position);
+    mTransform = glm::translate(transformIdentity, position);
 }
 
 glm::vec3 odb::Camera::getPosition() {
@@ -55,22 +54,28 @@ void odb::Camera::update(long ms) {
     cameraPosition.y += (ms * (mCameraTarget.y - cameraPosition.y)) / 1000;
 
     if (mRotationTarget > mCameraRotation) {
-#ifndef OSMESA
-        mCameraRotation = std::min(mCameraRotation + 5, mRotationTarget);
-#else
-        mCameraRotation = std::min( mCameraRotation + 45, mRotationTarget );
-#endif
+
+
+        if (kUseQuarterAngles) {
+            mCameraRotation = std::min( mCameraRotation + 45, mRotationTarget );
+        } else {
+            mCameraRotation = std::min(mCameraRotation + 5, mRotationTarget);
+        }
     } else if (mRotationTarget < mCameraRotation) {
-#ifndef OSMESA
-        mCameraRotation = std::max(mCameraRotation - 5, mRotationTarget);
-#else
-        mCameraRotation = std::max( mCameraRotation - 45, mRotationTarget );
-#endif
+        if (kUseQuarterAngles) {
+            mCameraRotation = std::max( mCameraRotation - 45, mRotationTarget );
+        } else {
+            mCameraRotation = std::max(mCameraRotation - 5, mRotationTarget);
+        }
     }
 }
 
 void odb::Camera::incrementRotateTarget(int delta) {
     this->mRotationTarget += delta;
+
+    if (kUseQuarterAngles) {
+        mCameraRotation += delta / 2;
+    }
 }
 
 bool odb::Camera::isAnimating() {

@@ -11,6 +11,7 @@
 #include "NativeBitmap.h"
 #include "LoadPNG.h"
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shared_ptr<Knights::IFileLoaderDelegate> fileLoader ) {

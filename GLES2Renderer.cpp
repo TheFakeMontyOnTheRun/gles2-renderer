@@ -2,16 +2,19 @@
 // Created by monty on 23/11/15.
 //
 #include <iostream>
-#include <array>
-
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <memory>
-#include <vector>
 #include <map>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
+
 
 
 #ifdef __APPLE__

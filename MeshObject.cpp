@@ -2,9 +2,15 @@
 // Created by monty on 24/09/16.
 //
 #include <string>
-#include <vector>
 #include "glm/glm.hpp"
 #include <memory>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
+
+
 #include "NativeBitmap.h"
 #include "Material.h"
 #include "Trig.h"

@@ -13,7 +13,7 @@ namespace odb {
 		using Id = std::string;
 		static const Id NullId;
 
-		std::vector<TrigBatch> trigBatches;
+		vector<TrigBatch> trigBatches;
 		Id mId;
 	};
 }

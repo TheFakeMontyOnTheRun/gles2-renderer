@@ -3,9 +3,14 @@
 //
 #include <memory>
 #include <string>
-#include <vector>
+
 #include <cstdlib>
 #include <cstring>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
 
 #include "IFileLoaderDelegate.h"
 #include "NativeBitmap.h"

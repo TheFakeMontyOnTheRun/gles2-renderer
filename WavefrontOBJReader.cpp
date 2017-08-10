@@ -7,13 +7,17 @@
 #include <iostream>
 #include <functional>
 #include <memory>
-#include <vector>
+
 #include <string>
 #include <sstream>
 #include <iterator>
 #include <unordered_set>
 #include <map>
-#include <array>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
 
 #include "Common.h"
 #include "NativeBitmap.h"
@@ -31,7 +35,7 @@ using Knights::floatFrom;
 using Knights::intFrom;
 using Knights::filterComments;
 
-glm::vec3 readVec3( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
+glm::vec3 readVec3( vector<std::string>::iterator &position,  vector<std::string>::iterator &end ) {
 
 	glm::vec3 toReturn;
 
@@ -49,7 +53,7 @@ glm::vec3 readVec3( std::vector<std::string>::iterator &position,  std::vector<s
 	return toReturn;
 }
 
-glm::vec2 readVec2( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
+glm::vec2 readVec2( vector<std::string>::iterator &position,  vector<std::string>::iterator &end ) {
 
 	glm::vec2 toReturn;
 
@@ -64,8 +68,8 @@ glm::vec2 readVec2( std::vector<std::string>::iterator &position,  std::vector<s
 	return toReturn;
 }
 
-std::vector<int> parseProperties( std::string vertexRawInformation ) {
-	std::vector<int> toReturn;
+vector<int> parseProperties( std::string vertexRawInformation ) {
+	vector<int> toReturn;
 
 	std::stringstream buffer;
 
@@ -82,53 +86,58 @@ std::vector<int> parseProperties( std::string vertexRawInformation ) {
 	return toReturn;
 }
 
-std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::iterator &line,  std::vector<std::string>::iterator &end, odb::MaterialList &materialList) {
+std::shared_ptr<odb::MeshObject> readObjectFrom( vector<std::string>::iterator &line,  vector<std::string>::iterator &end, odb::MaterialList &materialList) {
 	std::shared_ptr<odb::MeshObject> toReturn = std::make_shared<odb::MeshObject>();
 
-	std::map< std::string, std::function<void(std::vector<std::string>)>> meshTokenHandlers;
-	std::vector< glm::vec3 > vertices;
-    std::vector< glm::vec3 > normals;
-	std::vector< glm::vec2 > uvs;
-	std::vector< odb::Trig > trigsInThisBatch;
+	std::map< std::string, std::function<void(vector<std::string>)>> meshTokenHandlers;
+	vector< glm::vec3 > vertices;
+    vector< glm::vec3 > normals;
+	vector< glm::vec2 > uvs;
+	vector< odb::Trig > trigsInThisBatch;
 	std::shared_ptr<odb::Material> currentMaterial;
 
 
-	meshTokenHandlers[ "v" ] = [&](std::vector<std::string> stringLine) {
+	meshTokenHandlers[ "v" ] = [&](vector<std::string> stringLine) {
 		auto position = stringLine.begin();
 		++position;
 		vertices.push_back( readVec3( position, end ) );
 	};
 
-	meshTokenHandlers[ "vt" ] = [&](std::vector<std::string> stringLine) {
+	meshTokenHandlers[ "vt" ] = [&](vector<std::string> stringLine) {
 		auto position = stringLine.begin();
 		++position;
 		uvs.push_back( readVec2( position, end ) );
 	};
 
-    meshTokenHandlers[ "vn" ] = [&](std::vector<std::string> stringLine) {
+    meshTokenHandlers[ "vn" ] = [&](vector<std::string> stringLine) {
         auto position = stringLine.begin();
         ++position;
         normals.push_back( readVec3( position, end ) );
     };
 
-    meshTokenHandlers[ "usemtl" ] = [&](std::vector<std::string> stringLine) {
+    meshTokenHandlers[ "usemtl" ] = [&](vector<std::string> stringLine) {
 		auto position = stringLine.begin();
 		++position;
 		std::string currentMaterialName = *position;
 		currentMaterial = materialList.materials[ currentMaterialName ];
 	};
 
-	meshTokenHandlers[ "f" ] = [&](std::vector<std::string> stringLine) {
+	meshTokenHandlers[ "f" ] = [&](vector<std::string> stringLine) {
 
 		odb::Trig trig;
 
 		std::stringstream buffer;
 		buffer << *line;
 
-		std::vector<std::string> tokenList{std::istream_iterator<std::string>(buffer),
-		                                   std::istream_iterator<std::string>{}};
+		vector<std::string> tokenList;
 
-		std::vector<int> vertexProperties;
+		while ( buffer.good() ) {
+			std::string tmp;
+			buffer >> tmp;
+			tokenList.push_back(tmp);
+		}
+
+		vector<int> vertexProperties;
 
 		std::string p0 = tokenList[ 1 ];
 		vertexProperties = parseProperties( p0 );
@@ -183,8 +192,13 @@ std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::itera
 		std::stringstream buffer;
 		buffer << filterComments(stringLine);
 
-		std::vector<std::string> tokenList{std::istream_iterator<std::string>(buffer),
-		                                   std::istream_iterator<std::string>{}};
+		vector<std::string> tokenList;
+
+		while ( buffer.good() ) {
+			std::string tmp;
+			buffer >> tmp;
+			tokenList.push_back(tmp);
+		}
 
 		auto handler = meshTokenHandlers[ tokenList[ 0 ] ];
 
@@ -201,8 +215,8 @@ std::shared_ptr<odb::MeshObject> readObjectFrom( std::vector<std::string>::itera
 	return toReturn;
 }
 
-std::vector<std::string> consolidateLines(std::istream& data) {
-	std::vector<std::string> lines;
+vector<std::string> consolidateLines(std::istream& data) {
+	vector<std::string> lines;
 
 	std::stringstream buffer;
 	std::stringstream dataSource;
@@ -230,7 +244,7 @@ std::string extractMaterialFileFrom( std::string line ) {
 }
 
 void populateSceneWith( std::istream& meshData, std::shared_ptr<odb::Scene> scene, std::shared_ptr<Knights::IFileLoaderDelegate> fileLoader ) {
-	std::vector<std::string> tokenList = consolidateLines( meshData );
+	vector<std::string> tokenList = consolidateLines( meshData );
 
 	auto it = tokenList.begin();
 	auto end = tokenList.end();

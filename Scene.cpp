@@ -4,10 +4,16 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
+
 
 #include <string>
 #include <memory>
-#include <vector>
+
 #include <map>
 
 #include "NativeBitmap.h"

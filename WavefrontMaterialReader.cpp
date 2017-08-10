@@ -5,7 +5,7 @@
 #include "glm/glm.hpp"
 
 #include <memory>
-#include <vector>
+
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -13,8 +13,12 @@
 #include <unordered_set>
 #include <functional>
 #include <map>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
 
-#include <array>
+using eastl::vector;
+using eastl::array;
+
 #include "Common.h"
 #include "NativeBitmap.h"
 #include "Material.h"
@@ -29,7 +33,7 @@ using Knights::floatFrom;
 using Knights::intFrom;
 using Knights::filterComments;
 
-glm::vec3 readRGB( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
+glm::vec3 readRGB( vector<std::string>::iterator &position,  vector<std::string>::iterator &end ) {
 
 	glm::vec3 toReturn;
 
@@ -47,7 +51,7 @@ glm::vec3 readRGB( std::vector<std::string>::iterator &position,  std::vector<st
 	return toReturn;
 }
 
-std::shared_ptr<odb::Material> readMaterial( std::vector<std::string>::iterator &position,  std::vector<std::string>::iterator &end ) {
+std::shared_ptr<odb::Material> readMaterial( vector<std::string>::iterator &position,  vector<std::string>::iterator &end ) {
 	std::shared_ptr<odb::Material> toReturn = std::make_shared<odb::Material>();
 
 	std::map< std::string, std::function<void(void)>> materialTokenHandlers;
@@ -100,8 +104,14 @@ std::shared_ptr<odb::Material> readMaterial( std::vector<std::string>::iterator 
 odb::MaterialList readMaterialsFrom( std::istream& materialData ) {
 	odb::MaterialList toReturn;
 
-	std::vector<std::string> tokenList{std::istream_iterator<std::string>(materialData),
-	                                   std::istream_iterator<std::string>{}};
+	vector<std::string> tokenList;
+
+	while ( materialData.good() ) {
+		std::string tmp;
+		materialData >> tmp;
+		tokenList.push_back(tmp);
+	}
+
 	auto it = tokenList.begin();
 	auto end = tokenList.end();
 

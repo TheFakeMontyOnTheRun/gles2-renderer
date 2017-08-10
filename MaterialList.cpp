@@ -5,14 +5,15 @@
 #include "glm/glm.hpp"
 
 #include <memory>
-#include <vector>
 #include <iostream>
 #include <sstream>
 #include <unordered_set>
-
 #include <map>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
 
-#include <array>
+using eastl::vector;
+using eastl::array;
 
 #include "NativeBitmap.h"
 #include "Material.h"

@@ -22,12 +22,18 @@
 
 
 #include <memory>
-#include <vector>
+
 #include <iostream>
 #include <sstream>
 #include <unordered_set>
 #include <map>
-#include <array>
+#include <EASTL/vector.h>
+#include <EASTL/array.h>
+
+using eastl::vector;
+using eastl::array;
+
+
 #include "NativeBitmap.h"
 #include "Material.h"
 #include "Trig.h"
@@ -66,7 +72,7 @@ namespace odb {
 #endif
 	}
 
-	TrigBatch::TrigBatch(const std::vector<Trig> &triangles) {
+	TrigBatch::TrigBatch(const vector<Trig> &triangles) {
 		size_t size = triangles.size();
 
 		cachedMeshData = new float[5 * 3 * size];

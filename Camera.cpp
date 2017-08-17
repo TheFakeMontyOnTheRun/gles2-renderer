@@ -13,12 +13,20 @@
 
 #include "Camera.h"
 
-const bool kUseQuarterAngles =
+const static bool kUseQuarterAngles =
 #ifdef OSMESA
         true;
 #else
         false;
 #endif
+
+const static bool kCompleteMovementInstantly =
+#ifdef OSMESA
+        false;
+#else
+        false;
+#endif
+
 
 static const auto transformIdentity = glm::mat4(1.0f);
 
@@ -73,8 +81,12 @@ void odb::Camera::update(long ms) {
 void odb::Camera::incrementRotateTarget(int delta) {
     this->mRotationTarget += delta;
 
-    if (kUseQuarterAngles) {
-        mCameraRotation += delta / 2;
+    if ( kCompleteMovementInstantly ) {
+        mCameraRotation += delta;
+    } else {
+        if (kUseQuarterAngles) {
+            mCameraRotation += delta / 2;
+        }
     }
 }
 
@@ -101,7 +113,7 @@ void odb::Camera::setRotationYZ(float yz) {
     mAngleYZ = yz;
 }
 
-int odb::Camera::getCameraRotationXZ() {
+int odb::Camera::getCameraRotationXZ() const {
     return (mCameraRotation) + mAngleXZ;
 }
 

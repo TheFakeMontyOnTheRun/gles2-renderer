@@ -50,7 +50,7 @@ namespace odb {
 
 		void setRotationYZ( float yz );
 
-		int getCameraRotationXZ();
+		int getCameraRotationXZ() const;
 	};
 }
 

@@ -46,9 +46,9 @@ std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shar
         int b = (origin & 0x0000FF00) >> 8;
         int a = (origin & 0x000000FF);
 
-        int r20 = (( r / 20 ) * 20 );
-        int g20 = (( g / 20 ) * 20 );
-        int b20 = (( b / 20 ) * 20 );
+        int r20 = (( r / 21 ) * 21 );
+        int g20 = (( g / 21 ) * 21 );
+        int b20 = (( b / 21) * 21 );
 
         int pixel = a;
         pixel += ( r20 << 24 );

@@ -16,7 +16,7 @@ using eastl::array;
 #include "NativeBitmap.h"
 #include "LoadPNG.h"
 
-#ifdef OSMESA
+#if defined(OSMESA) || defined(VGA)
 #define STB_IMAGE_IMPLEMENTATION
 #endif
 
@@ -37,7 +37,7 @@ std::shared_ptr<odb::NativeBitmap> loadPNG(const std::string filename, std::shar
     std::memcpy( rawData, image, xSize * ySize * 4 );
     stbi_image_free(image);
 
-#ifdef OSMESA
+#if defined(OSMESA) || defined(VGA)
     for ( int c = 0; c < xSize * ySize; ++c  ) {
         int origin = rawData[ c ];
 

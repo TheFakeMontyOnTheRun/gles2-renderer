@@ -8,7 +8,6 @@ namespace odb {
 	Trig::Trig() {
 		cachedVertexData = nullptr;
 		cachedUVData = nullptr;
-		cachedNormalData = nullptr;
 	}
 
 	const float *Trig::getUVData() {
@@ -49,49 +48,8 @@ namespace odb {
 		return cachedVertexData;
 	}
 
-	const float *Trig::getNormalData() {
-		if (cachedNormalData == nullptr) {
-			cachedNormalData = new float[3 * 3];
-
-			cachedNormalData[0] = n0.x;
-			cachedNormalData[1] = n0.y;
-			cachedNormalData[2] = n0.z;
-
-			cachedNormalData[3] = n1.x;
-			cachedNormalData[4] = n1.y;
-			cachedNormalData[5] = n1.z;
-
-			cachedNormalData[6] = n2.x;
-			cachedNormalData[7] = n2.y;
-			cachedNormalData[8] = n2.z;
-		}
-
-		return cachedNormalData;
-	}
-
-	const float *Trig::getNormalTangentData() {
-		if (cachedNormalTangentData == nullptr) {
-			cachedNormalTangentData = new float[3 * 3];
-
-			cachedNormalTangentData[0] = nt0.x;
-			cachedNormalTangentData[1] = nt0.y;
-			cachedNormalTangentData[2] = nt0.z;
-
-			cachedNormalTangentData[3] = nt1.x;
-			cachedNormalTangentData[4] = nt1.y;
-			cachedNormalTangentData[5] = nt1.z;
-
-			cachedNormalTangentData[6] = nt2.x;
-			cachedNormalTangentData[7] = nt2.y;
-			cachedNormalTangentData[8] = nt2.z;
-		}
-
-		return cachedNormalTangentData;
-	}
-
 	Trig::~Trig() {
 		delete cachedUVData;
 		delete cachedVertexData;
-		delete cachedNormalData;
 	}
 }

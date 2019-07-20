@@ -317,8 +317,6 @@ namespace odb {
 	                          (void *) (sizeof(float) * 0));
 	    glVertexAttribPointer(textureCoordinatesAttributePosition, 2, GL_FLOAT, GL_TRUE,
 	                          sizeof(float) * 12, (void *) (sizeof(float) * 4));
-	    glVertexAttribPointer(normalAttributePosition, 3, GL_FLOAT, GL_TRUE, sizeof(float) * 12,
-	                          (void *) (sizeof(float) * 6));
 	    glVertexAttribPointer(tangentVectorShaderPosition, 3, GL_FLOAT, GL_FALSE,
 	                          sizeof(float) * 12, (void *) (sizeof(float) * 9));
 
@@ -445,21 +443,9 @@ namespace odb {
     }
 
     void GLES2Renderer::toggleFiltering() {
-//        if (currentFilter == GL_NEAREST) {
-//            currentFilter = GL_LINEAR;
-//            LOGI("Using GL_LINEAR\n");
-//        } else {
-//            currentFilter = GL_NEAREST;
-//            LOGI("Using GL_NEAREST\n");
-//        }
     }
 
     void GLES2Renderer::toggleLightning() {
-//        if (ambientLightColor == ambientLightFullColor) {
-//            ambientLightColor = ambientLightOffColor;
-//        } else {
-//            ambientLightColor = ambientLightFullColor;
-//        }
     }
 
     void GLES2Renderer::speedUpXZ() {
@@ -498,7 +484,6 @@ namespace odb {
 		cubeRotationAngleXZ = xzAngle;
 
 		glm::mat4 trans = resetTransformMatrices(translation);
-                //glm::rotate( glm::translate( glm::mat4(1.0f), glm::vec3( 0.0f, 0.0f, -5.0f ) ), cubeRotationAngleXZ, glm::vec3( 0.0f, 1.0f, 0.0f ) );
 
 		glUniformMatrix4fv(modelMatrixAttributePosition, 1, false, &trans[0][0]);
 		checkGlError("before drawing");

@@ -16,9 +16,7 @@ using std::array;
 #include "NativeBitmap.h"
 #include "LoadPNG.h"
 
-#if defined(OSMESA) || defined(VGA)
 #define STB_IMAGE_IMPLEMENTATION
-#endif
 
 #include "stb_image.h"
 

@@ -9,8 +9,6 @@ namespace odb {
 	class Trig {
 		float *cachedVertexData;
 		float *cachedUVData;
-		float *cachedNormalData;
-		float *cachedNormalTangentData;
 	public:
 		glm::vec3 p0;
 		glm::vec2 t0;
@@ -32,10 +30,6 @@ namespace odb {
 		const float *getVertexData();
 
 		const float *getUVData();
-
-		const float *getNormalData();
-
-		const float *getNormalTangentData();
 
 		virtual ~Trig();
 	};

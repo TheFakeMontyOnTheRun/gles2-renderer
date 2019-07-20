@@ -28,9 +28,9 @@ namespace odb {
         void drawGeometry(const int vertexVbo, const int indexVbo, int vertexCount,
                           const glm::mat4 &transform);
 
-        GLuint createProgram(const char *pVertexSource, const char *pFragmentSource);
+        uint createProgram(const char *pVertexSource, const char *pFragmentSource);
 
-        GLuint loadShader(GLenum shaderType, const char *pSource);
+        uint loadShader(GLenum shaderType, const char *pSource);
 
         const static float cubeVertices[6 * 4 * 12];
         const static unsigned short cubeIndices[6 * 6];
@@ -41,31 +41,29 @@ namespace odb {
         glm::mat4 cubeTransformMatrix;
         glm::mat4 projectionMatrix;
 
-        GLint tangentVectorShaderPosition;
+		int vertexAttributePosition;
+		int modelMatrixAttributePosition;
+		int samplerUniformPosition;
+		int normalMapUniformPosition;
+		int textureCoordinatesAttributePosition;
+		int projectionMatrixAttributePosition;
+		int normalAttributePosition;
 
-		GLint vertexAttributePosition;
-		GLint modelMatrixAttributePosition;
-		GLint samplerUniformPosition;
-		GLint normalMapUniformPosition;
-		GLint textureCoordinatesAttributePosition;
-		GLint projectionMatrixAttributePosition;
-		GLint normalAttributePosition;
+	    int diffuseLightPosition;
+        uint gProgram;
 
-	    GLint diffuseLightPosition;
-        GLuint gProgram;
-
-        GLuint textureId;
-	    GLuint normalMapId;
+        uint textureId;
+	    uint normalMapId;
 
         //VBO stuff
-        GLuint vboCubeVertexDataIndex;
-        GLuint vboCubeVertexIndicesIndex;
+        uint vboCubeVertexDataIndex;
+        uint vboCubeVertexIndicesIndex;
 
         int *textureData;
         int *normals;
         int textureWidth;
         int textureHeight;
-        GLuint currentFilter;
+        uint currentFilter;
         float cubeRotationAngleYZ;
         float cubeRotationAngleXZ;
 
@@ -73,8 +71,8 @@ namespace odb {
         glm::vec4 diffuseLightColor;
         glm::vec4 ambientLightColor;
 
-        GLuint diffuseLightColorShaderLocation;
-        GLuint ambientLightColorShaderLocation;
+        uint diffuseLightColorShaderLocation;
+        uint ambientLightColorShaderLocation;
 
         float rotationXZSpeed;
         float rotationYZSpeed;
@@ -86,37 +84,15 @@ namespace odb {
         bool init(float w, float h, const std::string &vertexShader,
                   const std::string &fragmentShader);
 
-        void setTexture(int *bitmapData, int *normalData, int width, int height, int format);
-
         void render();
 
-        void shutdown();
-
-        void tick();
-
-        void toggleFiltering();
-
-        void toggleLightning();
-
-        void speedUpXZ();
-
-        void speedDownXZ();
-
-        void speedUpYZ();
-
-        void speedDownYZ();
-
         void reset();
-
-        void setSpeeds(const glm::vec2 &param);
-
-        void drawTrigBatch( odb::TrigBatch &batch, glm::vec3 translation, float xzAngle, float yzAngle );
 
 	    void printGLString(const char *name, GLenum s);
 
 	    void checkGlError(const char *op);
 
-	    GLuint uploadTextureData(int *pixels, int width, int height);
+	    uint uploadTextureData(int *pixels, int width, int height);
     };
 }
 #endif //GLES2RENDERER_GLES2RENDERER_H

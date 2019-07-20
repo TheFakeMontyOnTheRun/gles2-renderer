@@ -4,17 +4,16 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+
+#include <string>
+#include <memory>
+#include <map>
+
 #include <vector>
 #include <array>
 
 using std::vector;
 using std::array;
-
-
-#include <string>
-#include <memory>
-
-#include <map>
 
 #include "NativeBitmap.h"
 #include "Material.h"

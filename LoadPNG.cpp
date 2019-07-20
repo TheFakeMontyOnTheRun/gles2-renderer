@@ -6,11 +6,11 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <EASTL/vector.h>
-#include <EASTL/array.h>
+#include <vector>
+#include <array>
 
-using eastl::vector;
-using eastl::array;
+using std::vector;
+using std::array;
 
 #include "IFileLoaderDelegate.h"
 #include "NativeBitmap.h"
